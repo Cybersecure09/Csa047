@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_PROCESSES 10
+
+typedef struct {
+    int pid; // Process ID
+    int arrival_time;
+    int burst_time;
+    int priority;
+} Process;
+
+// Function to swap two processes
+void swap(Process *a, Process *b) {
+    Process temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Function to find the index of the process with highest priority
+int find_highest_priority(Process processes[], int n) {
+    int highest_priority = processes[0].priority;
+    int highest_priority_index = 0;
+
+    for (int i = 1; i < n; i++) {
+        if (processes[i].priority > highest_priority) {
+            highest_priority = processes[i].priority;
+            highest_priority_index = i;
+        }
+    }
+
+    return highest_priority_index;
+}
+
+// Function to implement priority scheduling
+void priority_scheduling(Process processes[], int n) {
+    int completed[MAX_PROCESSES] = {0}; // Array to track completed processes
+    int current_time = 0;
+    int completed_processes = 0;
+
+    printf("\nProcess\t\tArrival\tBurst\tPriority\tStart\tFinish\tTurnaround\tWaiting\n");
+
+    while (completed_processes < n) {
+        int highest_priority_index = find_highest_priority(processes, n);
+
+        if (processes[highest_priority_index].arrival_time <= current_time && !completed[highest_priority_index]) {
+            int start_time = current_time;
+            int finish_time = start_time + processes[highest_priority_index].burst_time;
+
+            printf("%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                   processes[highest_priority_index].pid, 
+                   processes[highest_priority_index].arrival_time,
+                   processes[highest_priority_index].burst_time,
+                   processes[highest_priority_index].priority,
+                   start_time,
+                   finish_time,
+                   finish_time - processes[highest_priority_index].arrival_time,
+                   finish_time - processes[highest_priority_index].arrival_time - processes[highest_priority_index].burst_time);
+
+            current_time = finish_time;
+            completed[highest_priority_index] = 1;
+            completed_processes++;
+        } else {
+            current_time++;
+        }
+    }
+}
+
+int main() {
+    int n;
+
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+
+    if (n > MAX_PROCESSES) {
+        printf("Error: Maximum number of processes exceeded.\n");
+        return 1;
+    }
+
+    Process processes[MAX_PROCESSES];
+
+    printf("Enter process details (PID, Arrival Time, Burst Time, Priority):\n");
+    for (int i = 0; i < n; i++) {
+        printf("Process %d: ", i + 1);
+        scanf("%d %d %d %d", &processes[i].pid, &processes[i].arrival_time, &processes[i].burst_time, &processes[i].priority);
+    }
+
+    priority_scheduling(processes, n);
+
+    return 0;
+}
