@@ -1,22 +1,27 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 int main()
-{
-int RQ[100],i,n,TotalHeadMovements=0,initial;
-printf("enter no of requests\n");
-scanf("%d"&n);
-printf("enter request sequence\n");
-for(i=0;i<n;i++)
-scanf("%d",&RQ[i]);
-printf("enter the initial position \n");
-scanf("%d",&initial);
+ {
+    int RQ[100], i, n, TotalHeadMoment = 0, initial;
+    printf("Enter the number of Requests\n");
+    scanf("%d", &n);
+    printf("Enter the Requests sequence\n");
+    for (i = 0; i < n; i++)
+	 {
+        scanf("%d", &RQ[i]);
+     }
 
-for(i=0;i<n;i++)
-{
-TotalHeadMovements=TotalHeadMovements+abs(RQ[i]-initial);
-initial=RQ[i];
-}
+    printf("Enter initial head position\n");
+    scanf("%d", &initial);
 
-printf("Total Head movements is %d",TotalHeadMovements);
-return 0;
+   
+    for (i = 0; i < n; i++)
+	 {
+        TotalHeadMoment += abs(RQ[i] - initial); 
+        initial = RQ[i]; 
+     }
+
+    printf("Total head moment is %d\n", TotalHeadMoment);
+    return 0;
 }
