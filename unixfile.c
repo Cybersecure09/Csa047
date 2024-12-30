@@ -35,3 +35,19 @@ exit(1);
 } else {
 printf("File 'sample.txt' opened for reading.\n");
 }
+int bytesRead = read(fd, buffer, sizeof(buffer));if
+(bytesRead == -1) {
+perror("read");
+exit(1);
+} else {
+printf("Data read from 'sample.txt':\n"); write(STDOUT_FILENO, buffer,
+bytesRead);
+}
+close(fd);
+// Deleting the file
+if (remove("sample.txt") == -1) {
+perror("remove");
+exit(1);
+} else {
+printf("File 'sample.txt' deleted.\n");
+}
